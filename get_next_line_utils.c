@@ -12,26 +12,33 @@
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *input)
+size_t	ft_strlen(const char *input, const char delimiter)
 {
 	size_t	len;
 
 	len = 0;
 	while (input[len] != '\0')
+	{
+		if (input[len] == delimiter)
+		{
+			len++;
+			break;
+		}
 		len++;
+	}
+
 	return (len);
 }
-
-char	*ft_strdup(char *src, short flag)
+char	*ft_strdup(char *src, const char delimiter, short flag)
 {
 	char	*dupe;
-	int		size;
-	int		i;
+	size_t		size;
+	size_t		i;
 
 	if (src == NULL)
 		return (NULL);
 	else
-		size = ft_strlen(src);
+		size = ft_strlen(src, delimiter);
 	dupe = malloc(size + 1);
 	if (!dupe)
 		return (NULL);
@@ -47,81 +54,66 @@ char	*ft_strdup(char *src, short flag)
 		free(src);
 	return (dupe);
 }
-
-char	*ft_new_strlcat(char *alldata, const char *grabdata)
+char	*newstrcat(char *alldata, const char *grabdata, size_t dest, size_t src)
 {
-	size_t	src_len;
-	size_t	dest_len;
-	size_t	i;
 	char	*newdata;
-
-	src_len = 0;
-	dest_len = 0;
-	if (alldata != NULL)
-		dest_len = ft_strlen(alldata);
-	if (grabdata != NULL)
-		src_len = ft_strlen(grabdata);
-	newdata = malloc(dest_len + src_len + +1);
+	size_t	i;
+    
+    newdata = NULL;
+    i = 0;
+	newdata = malloc(dest + src + 1);
 	if (!newdata)
 		return (NULL);
-	i = 0;
-	while (i < dest_len)
+
+	while (i < dest)
 	{
 		newdata[i] = alldata[i];
 		i++;
 	}
 	i = 0;
-	while (i < src_len)
+	while (i < src)
 	{
-		newdata[dest_len + i] = grabdata[i];
+		newdata[dest + i] = grabdata[i];
 		i++;
 	}
-	newdata[dest_len + src_len] = '\0';
+	newdata[dest + src] = '\0';
 	free(alldata);
 	return (newdata);
 }
+char	*ft_new_strlcat(char *alldata, const char *grabdata)
+{
+	size_t	src_len;
+	size_t	dest_len;
+	char	*newdata;
 
+	src_len = 0;
+	dest_len = 0;
+	newdata = NULL;
+	if (alldata != NULL)
+		dest_len = ft_strlen(alldata,'\0');
+	if (grabdata != NULL)
+		src_len = ft_strlen(grabdata,'\0');
+
+	newdata = newstrcat(alldata, grabdata, dest_len, src_len);
+	return (newdata);
+}
 char	*putstr_nlpos(char *s, char **remains)
 {
 	char	*ret;
-	int		i;
-	int		size;
+	size_t		size;
 
 	ret = NULL;
-	size = 0;
-	i = 0;
-	while (s[size])
-	{
-		if (s[size] == '\n')
-		{
-			size++;
-			break;
-		}
-		size++;
-	}
-
+	size = ft_strlen(s, '\n');
 	if (s[size-1] == '\n')
     {
-		ret = malloc(size + 1);
-		if (!ret)
-			return (NULL);
-
-		while (i < size)
-		{
-			ret[i] = s[i];
-			i++;
-		}
-		ret[i] = '\0';
-
-		*remains = ft_strdup(s + size, 0);
-	    free(s);
+		ret = ft_strdup(s, '\n', 0);
+		*remains = ft_strdup(s + size, '\0', 0);
     }
 	else if (s[size] == '\0')
 	{
-		ret = ft_strdup(s, 0);
-		*remains = ft_strdup("", 0);
-		free(s);
+		ret = ft_strdup(s, '\0', 0);
+		*remains = ft_strdup("", '\0', 0);
 	}
-
+	free(s);
 	return (ret);
 }

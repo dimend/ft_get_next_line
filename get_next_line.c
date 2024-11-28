@@ -1,23 +1,32 @@
 #include "get_next_line.h"
 
+static size_t findnl(char *alldata)
+{
+	size_t nl;
+
+	nl = 0;
+
+		while (alldata[nl])
+		{
+			if (alldata[nl] == '\n' || alldata[nl] == '\0')
+				return(1);
+			nl++;
+		}
+	return (0);
+}
 char	*get_next_line(int fd)
 {
 	char		grabdata[BUFFER_SIZE];
 	static char	*alldata;
 	static char	*remainder;
-	int			nlpos;
-	int			bytes_read;
+	size_t			bytes_read;
 
-	if(!fd)
+	if(!fd || fd < 0)
 		return (NULL);
 
 	bytes_read = 0;
-	nlpos = 0;
 	if (remainder != NULL)
-	{
-		alldata = ft_strdup(remainder, 1);
-		remainder = NULL;
-	}
+		alldata = ft_strdup(remainder, '\0', 1);
 	while (1)
 	{
 		bytes_read = read(fd, grabdata, BUFFER_SIZE);
@@ -25,21 +34,16 @@ char	*get_next_line(int fd)
 			break ;
 		grabdata[bytes_read] = '\0';
 		alldata = ft_new_strlcat(alldata, grabdata);
-		while (alldata[nlpos])
-		{
-			if (alldata[nlpos] == '\n' || alldata[nlpos] == '\0')
-				break ;
-			nlpos++;
-		}
+		if (findnl(alldata))
+			break;
 	}
 	if (alldata && alldata[0] != '\0')
 		return (putstr_nlpos(alldata, &remainder));
-	
 	free(alldata);
 	return (NULL);
 }
 
-int main(int ac, char *av[])
+/* int main(int ac, char *av[])
 {
 	if (ac == 2)
 	{
@@ -55,4 +59,4 @@ int main(int ac, char *av[])
 		close(fd);
 	}
     return (0);
-}
+} */
