@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:21 by dimendon          #+#    #+#             */
-/*   Updated: 2024/11/27 20:07:43 by dimendon         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:27:08 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 # define GET_NEXT_LINE_H
 
 #ifndef BUFFER_SIZE
-#define BUFFER_SIZE 42
-#elif BUFFER_SIZE < 0
-#undef BUFFER_SIZE
-#define BUFFER_SIZE 42
-#elif BUFFER_SIZE > 9999
-#undef BUFFER_SIZE
-#define BUFFER_SIZE 5000
+# define BUFFER_SIZE 42
+# elif BUFFER_SIZE < 0
+# undef BUFFER_SIZE
+# define BUFFER_SIZE 42
+# elif BUFFER_SIZE > 9999
+# undef BUFFER_SIZE
+# define BUFFER_SIZE 5000
 #endif
 
 # include <unistd.h>

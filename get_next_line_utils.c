@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:26 by dimendon          #+#    #+#             */
-/*   Updated: 2024/11/27 20:05:51 by dimendon         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:26:57 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,18 @@ size_t	ft_strlen(const char *input, const char delimiter)
 		if (input[len] == delimiter)
 		{
 			len++;
-			break;
+			break ;
 		}
 		len++;
 	}
-
 	return (len);
 }
+
 char	*ft_strdup(char *src, const char delimiter, short flag)
 {
 	char	*dupe;
-	size_t		size;
-	size_t		i;
+	size_t	size;
+	size_t	i;
 
 	if (src == NULL)
 		return (NULL);
@@ -42,7 +42,6 @@ char	*ft_strdup(char *src, const char delimiter, short flag)
 	dupe = malloc(size + 1);
 	if (!dupe)
 		return (NULL);
-		
 	i = 0;
 	while (i < size)
 	{
@@ -54,17 +53,17 @@ char	*ft_strdup(char *src, const char delimiter, short flag)
 		free(src);
 	return (dupe);
 }
+
 char	*newstrcat(char *alldata, const char *grabdata, size_t dest, size_t src)
 {
 	char	*newdata;
 	size_t	i;
-    
-    newdata = NULL;
-    i = 0;
+
+	newdata = NULL;
+	i = 0;
 	newdata = malloc(dest + src + 1);
 	if (!newdata)
 		return (NULL);
-
 	while (i < dest)
 	{
 		newdata[i] = alldata[i];
@@ -80,6 +79,7 @@ char	*newstrcat(char *alldata, const char *grabdata, size_t dest, size_t src)
 	free(alldata);
 	return (newdata);
 }
+
 char	*ft_new_strlcat(char *alldata, const char *grabdata)
 {
 	size_t	src_len;
@@ -90,25 +90,25 @@ char	*ft_new_strlcat(char *alldata, const char *grabdata)
 	dest_len = 0;
 	newdata = NULL;
 	if (alldata != NULL)
-		dest_len = ft_strlen(alldata,'\0');
+		dest_len = ft_strlen(alldata, '\0');
 	if (grabdata != NULL)
-		src_len = ft_strlen(grabdata,'\0');
-
+		src_len = ft_strlen(grabdata, '\0');
 	newdata = newstrcat(alldata, grabdata, dest_len, src_len);
 	return (newdata);
 }
+
 char	*putstr_nlpos(char *s, char **remains)
 {
 	char	*ret;
-	size_t		size;
+	size_t	size;
 
 	ret = NULL;
 	size = ft_strlen(s, '\n');
-	if (s[size-1] == '\n')
-    {
+	if (s[size - 1] == '\n')
+	{
 		ret = ft_strdup(s, '\n', 0);
 		*remains = ft_strdup(s + size, '\0', 0);
-    }
+	}
 	else if (s[size] == '\0')
 	{
 		ret = ft_strdup(s, '\0', 0);
