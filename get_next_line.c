@@ -33,7 +33,7 @@ char	*get_next_line(int fd)
 	static char	*remainder;
 	ssize_t		bytes_read;
 
-	if (!fd || fd < 0)
+	if (fd < 0)
 		return (NULL);
 	bytes_read = 0;
 	if (remainder != NULL)
@@ -54,20 +54,3 @@ char	*get_next_line(int fd)
 	return (NULL);
 }
 
-/* int main(int ac, char *av[])
-{
-	if (ac == 2)
-	{
-		int fd = open(av[1], O_RDONLY);
-
-		char *line;
-		while ((line = get_next_line(fd)) != NULL)
-		{
-			printf("%s", line);
-			free(line);
-		}
-
-		close(fd);
-	}
-	return (0);
-} */
