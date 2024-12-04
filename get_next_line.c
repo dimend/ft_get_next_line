@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:26:24 by dimendon          #+#    #+#             */
-/*   Updated: 2024/11/29 16:27:22 by dimendon         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:00:43 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,26 @@ static size_t	findnl(char *alldata)
 char	*get_next_line(int fd)
 {
 	char		grabdata[BUFFER_SIZE];
-	static char	*alldata;
-	static char	*remainder;
+	static char	*alldata[2];
 	ssize_t		bytes_read;
 
 	if (fd < 0)
 		return (NULL);
 	bytes_read = 0;
-	if (remainder != NULL)
-		alldata = ft_strdup(remainder, '\0', 1);
+	if (alldata[1] != NULL)
+		alldata[0] = ft_strdup(alldata[1], '\0', 1);
 	while (1)
 	{
 		bytes_read = read(fd, grabdata, BUFFER_SIZE);
 		if (bytes_read <= 0)
 			break ;
 		grabdata[bytes_read] = '\0';
-		alldata = ft_new_strlcat(alldata, grabdata);
-		if (findnl(alldata))
+		alldata[0] = ft_new_strlcat(alldata[0], grabdata);
+		if (findnl(alldata[0]))
 			break ;
 	}
-	if (alldata && alldata[0] != '\0')
-		return (putstr_nlpos(alldata, &remainder));
-	free(alldata);
+	if (alldata[0] && alldata[0][0] != '\0')
+		return (putstr_nlpos(alldata[0], &alldata[1]));
+	free(*alldata);
 	return (NULL);
 }
-
